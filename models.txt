@@ -1,0 +1,14 @@
+    "llama3-8b-8192": "LLama 3 8B - Fast and efficient model with 8K context window",
+    "llama3-70b-8192": "LLama 3 70B - Powerful and accurate model with 8K context window",
+    "llama-3.1-8b-instant": "LLama 3.1 8B - Fast model with 128K context window",
+    "llama-3.3-70b-versatile": "LLama 3.3 70B - Versatile model with 128K context window",
+    "gemma2-9b-it": "Google Gemma 2 9B - Google's instruction-tuned model with 8K context window",
+    "llama-guard-3-8b": "LLama Guard 3 - Content moderation model",
+    
+    # Preview Models
+    "meta-llama/llama-4-maverick-17b-128e-instruct": "LLama 4 Maverick - Latest Llama 4 with 128K context",
+    "meta-llama/llama-4-scout-17b-16e-instruct": "LLama 4 Scout - Latest Llama 4 with 128K context",
+    "mistral-saba-24b": "Mistral Saba 24B - Mistral's model with 32K context",
+    "qwen-qwq-32b": "Qwen QWQ 32B - Alibaba's model with 128K context",
+    "deepseek-r1-distill-llama-70b": "DeepSeek R1 Distill Llama 70B - Distilled model with 128K context",
+    "allam-2-7b": "ALLaM 2 7B - Saudi AI Authority's model with 4K context"
