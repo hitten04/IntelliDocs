@@ -1,26 +1,31 @@
 import os
 import groq
-from dotenv import load_dotenv
-from typing import Dict, Any, List
-import os
-import groq
-from dotenv import load_dotenv
+import streamlit as st # Import streamlit to access st.secrets
 from typing import Dict, Any, List
 import logging
 import sys
 import pysqlite3
 sys.modules['sqlite3'] = pysqlite3
 
-# Load environment variables
-load_dotenv()
+# Configuration from environment variables (using st.secrets for Streamlit Cloud compatibility)
+# Fallback to os.getenv for local development if st.secrets is not available (e.g., not running via streamlit run)
+try:
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+    LOGGING_LEVEL = st.secrets.get("LOGGING_LEVEL", "INFO").upper()
+    DEFAULT_MODEL = st.secrets.get("DEFAULT_MODEL", "llama3-8b-8192")
+    DEFAULT_TEMPERATURE = float(st.secrets.get("DEFAULT_TEMPERATURE", 0.7))
+    DEFAULT_MAX_TOKENS = int(st.secrets.get("DEFAULT_MAX_TOKENS", 500))
+except AttributeError: # st.secrets not available, likely local development
+    from dotenv import load_dotenv
+    load_dotenv() # Load .env for local development
+    GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+    LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO").upper()
+    DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "llama3-8b-8192")
+    DEFAULT_TEMPERATURE = float(os.getenv("DEFAULT_TEMPERATURE", 0.7))
+    DEFAULT_MAX_TOKENS = int(os.getenv("DEFAULT_MAX_TOKENS", 500))
 
-# Configuration from environment variables
-LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO").upper()
-DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "llama3-8b-8192")
-DEFAULT_TEMPERATURE = float(os.getenv("DEFAULT_TEMPERATURE", 0.7))
-DEFAULT_MAX_TOKENS = int(os.getenv("DEFAULT_MAX_TOKENS", 500))
 
-# LLM Model Configuration (from .env)
+# LLM Model Configuration
 AVAILABLE_MODELS = {
     "llama3-8b-8192": "LLama 3 8B - Fast and efficient model with 8K context window",
     "llama3-70b-8192": "LLama 3 70B - Powerful and accurate model with 8K context window",
@@ -37,10 +42,9 @@ AVAILABLE_MODELS = {
 logging.basicConfig(level=LOGGING_LEVEL)
 logger = logging.getLogger(__name__)
 
-# Groq API Key
-GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+# Groq API Key check
 if not GROQ_API_KEY:
-    logger.error("GROQ_API_KEY not found in environment variables.")
+    logger.error("GROQ_API_KEY not found in environment variables or Streamlit secrets.")
     raise ValueError("GROQ_API_KEY is not set.")
 
 # Initialize Groq client
@@ -49,6 +53,10 @@ try:
 except Exception as e:
     logger.error(f"Failed to initialize Groq client: {e}")
     raise
+
+def get_available_models() -> Dict[str, str]:
+    """Return the dictionary of available models."""
+    return AVAILABLE_MODELS
 
 def get_available_models() -> Dict[str, str]:
     """Return the dictionary of available models."""

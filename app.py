@@ -10,18 +10,25 @@ import sys
 import pysqlite3
 sys.modules['sqlite3'] = pysqlite3
 import shutil
-from dotenv import load_dotenv
 from document_processor import process_document, query_documents, delete_document
 from model_utils import get_available_models, get_model_response
 
-load_dotenv()
-
-# Configuration from environment variables
-LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO").upper()
-DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "llama3-8b-8192")
-DEFAULT_TEMPERATURE = float(os.getenv("DEFAULT_TEMPERATURE", 0.7))
-DEFAULT_MAX_TOKENS = int(os.getenv("DEFAULT_MAX_TOKENS", 500))
-CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "chroma_db")
+# Configuration from environment variables (using st.secrets for Streamlit Cloud compatibility)
+# Fallback to os.getenv for local development if st.secrets is not available (e.g., not running via streamlit run)
+try:
+    LOGGING_LEVEL = st.secrets.get("LOGGING_LEVEL", "INFO").upper()
+    DEFAULT_MODEL = st.secrets.get("DEFAULT_MODEL", "llama3-8b-8192")
+    DEFAULT_TEMPERATURE = float(st.secrets.get("DEFAULT_TEMPERATURE", 0.7))
+    DEFAULT_MAX_TOKENS = int(st.secrets.get("DEFAULT_MAX_TOKENS", 500))
+    CHROMA_DB_PATH = st.secrets.get("CHROMA_DB_PATH", "chroma_db")
+except AttributeError: # st.secrets not available, likely local development
+    from dotenv import load_dotenv
+    load_dotenv() # Load .env for local development
+    LOGGING_LEVEL = os.getenv("LOGGING_LEVEL", "INFO").upper()
+    DEFAULT_MODEL = os.getenv("DEFAULT_MODEL", "llama3-8b-8192")
+    DEFAULT_TEMPERATURE = float(os.getenv("DEFAULT_TEMPERATURE", 0.7))
+    DEFAULT_MAX_TOKENS = int(os.getenv("DEFAULT_MAX_TOKENS", 500))
+    CHROMA_DB_PATH = os.getenv("CHROMA_DB_PATH", "chroma_db")
 
 # Configure logging
 logging.basicConfig(level=LOGGING_LEVEL)
