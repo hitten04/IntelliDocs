@@ -24,7 +24,7 @@ pip install -r requirements.txt
 Create a `.env` file in the project root with the following:
 
 ```
-GROQ_API_KEY=your_groq_api_key
+GROQ_API_KEY=gsk_your_groq_api_key
 ```
 
 3. Run the application:
@@ -67,12 +67,15 @@ streamlit run app.py
 
 The application supports various Groq LLM models, including:
 
-- LLama 3 (8B, 70B)
-- LLama 3.1 and 3.3
-- Gemma 2
-- LLama 4 (Preview)
-- Mistral Saba
-- And more
+- LLama 3 8B (8K context window)
+- LLama 3 70B (8K context window)
+- LLama 3.1 8B (128K context window)
+- LLama 3.3 70B (128K context window)
+- Google Gemma 2 9B (8K context window)
+- LLama 4 Maverick 17B (128K context window)
+- LLama 4 Scout 17B (128K context window)
+- Mistral Saba 24B (32K context window)
+- DeepSeek R1 Distill Llama 70B (128K context window)
 
 ## Limitations
 

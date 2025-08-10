@@ -7,6 +7,9 @@ import groq
 from dotenv import load_dotenv
 from typing import Dict, Any, List
 import logging
+import sys
+import pysqlite3
+sys.modules['sqlite3'] = pysqlite3
 
 # Load environment variables
 load_dotenv()

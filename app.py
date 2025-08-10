@@ -6,6 +6,9 @@ import os
 import uuid
 import logging
 import atexit
+import sys
+import pysqlite3
+sys.modules['sqlite3'] = pysqlite3
 import shutil
 from dotenv import load_dotenv
 from document_processor import process_document, query_documents, delete_document

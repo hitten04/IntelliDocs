@@ -14,6 +14,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import chromadb
 import logging
 from dotenv import load_dotenv
+import sys
+import pysqlite3
+sys.modules['sqlite3'] = pysqlite3
 
 load_dotenv()
 
